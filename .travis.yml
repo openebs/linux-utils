@@ -1,0 +1,16 @@
+dist: xenial
+
+sudo: required
+
+services:
+  - docker
+
+addons:
+  apt:
+    update: true
+
+script:
+  - make image
+
+after_success:
+  - make push
