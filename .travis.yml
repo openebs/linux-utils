@@ -5,9 +5,9 @@ sudo: required
 os:
   - linux
 
-arch:
-  - amd64
-  - arm64
+#arch:
+#  - amd64
+#  - arm64
 
 matrix:
   include:
