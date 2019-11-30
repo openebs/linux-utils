@@ -1,19 +1,32 @@
 dist: xenial
 
-sudo: required
+language: minimal
 
 services:
   - docker
 
+jobs:
+  include:
+    - os: linux
+      arch: amd64
+      env:
+        - DIMAGE="openebs/linux-utils"
+        - TRIVYARCH="64bit"
+    - os: linux
+      arch: arm64
+      env:
+        - DIMAGE="openebs/linux-utils-arm64"
+        - TRIVYARCH="ARM64"
+
 before_install:
   - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-  - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-64bit.tar.gz
-  - tar zxvf trivy_${VERSION}_Linux-64bit.tar.gz
+  - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz
+  - tar zxvf trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz
 
 script:
   - make image
-  - ./trivy --exit-code 0 --severity HIGH --no-progress openebs/linux-utils:ci
-  - ./trivy --exit-code 1 --severity CRITICAL --no-progress openebs/linux-utils:ci
+  - ./trivy --exit-code 0 --severity HIGH --no-progress ${DIMAGE}:ci
+  - ./trivy --exit-code 1 --severity CRITICAL --no-progress ${DIMAGE}:ci
 
 after_success:
   - make push

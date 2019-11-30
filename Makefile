@@ -18,6 +18,17 @@
 # set the shell to bash in case some environments use sh
 SHELL:=/bin/bash
 
+# Determine the DIMAGE associated with given arch/os 
+ifeq (${DIMAGE}, )
+  #Default image name
+  DIMAGE:=openebs/linux-utils
+  XC_ARCH:=$(shell uname -m)
+  ifeq (${XC_ARCH},aarch64)
+    DIMAGE="openebs/linux-utils-arm64"
+  endif
+  export DIMAGE
+endif
+
 # Compile binaries and build docker images
 .PHONY: build
 build: image push
@@ -31,10 +42,10 @@ header:
 
 .PHONY: image
 image: header
-	@sudo docker build -t "openebs/linux-utils:ci" -f Dockerfile .
+	@sudo docker build -t "${DIMAGE}:ci" -f Dockerfile .
 	@echo
 
 
 .PHONY: push
 push: 
-	DIMAGE=openebs/linux-utils ./buildscripts/push;
+	./buildscripts/push;
