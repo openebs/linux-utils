@@ -2,6 +2,22 @@ dist: xenial
 
 sudo: required
 
+os:
+  - linux
+
+arch:
+  - amd64
+  - arm64
+
+matrix:
+  include:
+    - os: linux
+      arch: amd64
+      env: DIMAGE="openebs/linux-utils"
+    - os: linux
+      arch: arm64
+      env: DIMAGE="openebs/linux-utils-arm64"
+
 services:
   - docker
 
@@ -12,8 +28,8 @@ before_install:
 
 script:
   - make image
-  - ./trivy --exit-code 0 --severity HIGH --no-progress openebs/linux-utils:ci
-  - ./trivy --exit-code 1 --severity CRITICAL --no-progress openebs/linux-utils:ci
+  - ./trivy --exit-code 0 --severity HIGH --no-progress ${DIMAGE}:ci
+  - ./trivy --exit-code 1 --severity CRITICAL --no-progress ${DIMAGE}:ci
 
 after_success:
   - make push
