@@ -1,15 +1,13 @@
 dist: xenial
 
-sudo: required
+#sudo: required
 
 os:
   - linux
 
-#arch:
-#  - amd64
-#  - arm64
+language: minimal
 
-matrix:
+jobs:
   include:
     - os: linux
       arch: amd64
