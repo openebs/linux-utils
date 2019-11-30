@@ -1,11 +1,9 @@
 dist: xenial
 
-#sudo: required
-
-os:
-  - linux
-
 language: minimal
+
+services:
+  - docker
 
 jobs:
   include:
@@ -19,9 +17,6 @@ jobs:
       env:
         - DIMAGE="openebs/linux-utils-arm64"
         - TRIVYARCH="ARM64"
-
-services:
-  - docker
 
 before_install:
   - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
