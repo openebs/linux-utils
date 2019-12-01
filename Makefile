@@ -46,6 +46,15 @@ image: header
 	@echo
 
 
+.PHONY: test
+test:
+	@echo "---------------------------------------"
+	@echo "--> Test required tools are available  "
+	@echo "---------------------------------------"
+	@sudo docker run "${DIMAGE}:ci" which mkdir
+	@sudo docker run "${DIMAGE}:ci" which rm
+	@sudo docker run "${DIMAGE}:ci" which wipefs
+
 .PHONY: push
 push: 
 	./buildscripts/push;
