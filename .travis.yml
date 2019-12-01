@@ -25,6 +25,7 @@ before_install:
 
 script:
   - make image
+  - make test
   - ./trivy --exit-code 0 --severity HIGH --no-progress ${DIMAGE}:ci
   - ./trivy --exit-code 1 --severity CRITICAL --no-progress ${DIMAGE}:ci
 
