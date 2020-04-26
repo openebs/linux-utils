@@ -1,2 +1,3 @@
 # linux-utils
-alpine based linux utils docker image used for launching helper jobs. 
+
+This repository contains the scripts required for building a customized alpine based linux utils docker image used for launching OpenEBS helper jobs. 
