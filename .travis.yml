@@ -10,15 +10,20 @@ jobs:
     - os: linux
       arch: amd64
       env:
-        - DIMAGE="openebs/linux-utils"
+        - IMAGE_REPO="linux-utils"
         - TRIVYARCH="64bit"
     - os: linux
       arch: arm64
       env:
-        - DIMAGE="openebs/linux-utils-arm64"
+        - IMAGE_REPO="linux-utils-arm64"
         - TRIVYARCH="ARM64"
 
 before_install:
+  - if [ -z $IMAGE_ORG ]; then
+      IMAGE_ORG="openebs";
+      export IMAGE_ORG;
+    fi
+  - export DIMAGE="${IMAGE_ORG}/${IMAGE_REPO}"
   - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
   - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz
   - tar zxvf trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz
