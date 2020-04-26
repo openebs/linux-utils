@@ -42,7 +42,10 @@ function TagAndPushImage() {
   REPO="$1"
   TAG="$2"
 
-  IMAGE_URI="${REPO}:${TAG}";
+  #Add an option to specify a custom TAG_SUFFIX 
+  #via environment variable. Default is no tag.
+  #Example suffix could be "-debug" of "-dev"
+  IMAGE_URI="${REPO}:${TAG}${TAG_SUFFIX}";
   sudo docker tag ${IMAGEID} ${IMAGE_URI};
   echo " push ${IMAGE_URI}";
   sudo docker push ${IMAGE_URI};

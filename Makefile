@@ -18,6 +18,7 @@
 # set the shell to bash in case some environments use sh
 SHELL:=/bin/bash
 
+
 # Determine the DIMAGE associated with given arch/os 
 ifeq (${DIMAGE}, )
   #Default image name
@@ -28,6 +29,26 @@ ifeq (${DIMAGE}, )
   endif
   export DIMAGE
 endif
+
+#Initialize Docker build arguments. Each of these
+# DBUILD_<name> args will be passed to docker build command
+# via --build-arg DBUILD_<name>=$DBUILD_<name>
+DBUILD_DATE = $(shell date +'%Y%m%d%H%M%S')
+
+# Specify the docker arg for repository url
+ifeq (${DBUILD_REPO_URL}, )
+  DBUILD_REPO_URL="https://github.com/openebs/linux-utils"
+  export DBUILD_REPO_URL
+endif
+
+# Specify the docker arg for website url
+ifeq (${DBUILD_SITE_URL}, )
+  DBUILD_SITE_URL="https://openebs.io"
+  export DBUILD_SITE_URL
+endif
+
+export DBUILD_ARGS=--build-arg DBUILD_DATE=${DBUILD_DATE} --build-arg DBUILD_REPO_URL=${DBUILD_REPO_URL} --build-arg DBUILD_SITE_URL=${DBUILD_SITE_URL}
+
 
 # Compile binaries and build docker images
 .PHONY: build
@@ -42,7 +63,7 @@ header:
 
 .PHONY: image
 image: header
-	@sudo docker build -t "${DIMAGE}:ci" -f Dockerfile .
+	@sudo docker build -t "${DIMAGE}:ci" -f Dockerfile . ${DBUILD_ARGS}
 	@echo
 
 
