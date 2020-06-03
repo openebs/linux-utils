@@ -19,6 +19,11 @@ jobs:
         - IMAGE_REPO="linux-utils-arm64"
         - TRIVYARCH="ARM64"
         - RELEASE_TAG_DOWNSTREAM=0
+    - os: linux
+      arch: ppc64le
+      env:
+        - IMAGE_REPO="linux-utils-ppc64le"
+        - RELEASE_TAG_DOWNSTREAM=0
 
 before_install:
   - if [ -z $IMAGE_ORG ]; then
@@ -26,15 +31,19 @@ before_install:
       export IMAGE_ORG;
     fi
   - export DIMAGE="${IMAGE_ORG}/${IMAGE_REPO}"
-  - export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/')
-  - wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz
-  - tar zxvf trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz
+  - if [ "$TRAVIS_CPU_ARCH" != "ppc64le" ]; then
+      export VERSION=$(curl --silent "https://api.github.com/repos/aquasecurity/trivy/releases/latest" | grep '"tag_name":' | sed -E 's/.*"v([^"]+)".*/\1/');
+      wget https://github.com/aquasecurity/trivy/releases/download/v${VERSION}/trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz;
+      tar zxvf trivy_${VERSION}_Linux-${TRIVYARCH}.tar.gz;
+    fi  
 
 script:
   - make image
   - make test
-  - ./trivy --exit-code 0 --severity HIGH --no-progress ${DIMAGE}:ci
-  - ./trivy --exit-code 1 --severity CRITICAL --no-progress ${DIMAGE}:ci
+  - if [ "$TRAVIS_CPU_ARCH" != "ppc64le" ]; then
+      ./trivy --exit-code 0 --severity HIGH --no-progress ${DIMAGE}:ci;
+      ./trivy --exit-code 1 --severity CRITICAL --no-progress ${DIMAGE}:ci;
+    fi
   - make push
   # If this build is running due to travis release tag, and
   # this job indicates to push the release downstream, then
