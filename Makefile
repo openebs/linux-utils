@@ -26,6 +26,8 @@ ifeq (${DIMAGE}, )
   XC_ARCH:=$(shell uname -m)
   ifeq (${XC_ARCH},aarch64)
     DIMAGE="openebs/linux-utils-arm64"
+  else ifeq (${XC_ARCH},ppc64le)
+    DIMAGE="openebs/linux-utils-ppc64le"
   endif
   export DIMAGE
 endif

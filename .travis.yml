@@ -19,6 +19,12 @@ jobs:
         - IMAGE_REPO="linux-utils-arm64"
         - TRIVYARCH="ARM64"
         - RELEASE_TAG_DOWNSTREAM=0
+    - os: linux
+      arch: ppc64le
+      env:
+        - IMAGE_REPO="linux-utils-arm64"
+        - TRIVYARCH="PPC64LE"
+        - RELEASE_TAG_DOWNSTREAM=0
 
 before_install:
   - if [ -z $IMAGE_ORG ]; then
