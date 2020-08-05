@@ -18,17 +18,18 @@
 # set the shell to bash in case some environments use sh
 SHELL:=/bin/bash
 
+# Default behaviour is to use buildx only for github actions, until the Travis workflow is deprecated.
+BUILDX:=false
+
+ifeq (${IMAGE_ORG}, )
+  IMAGE_ORG="openebs"
+  export IMAGE_ORG
+endif
 
 # Determine the DIMAGE associated with given arch/os 
 ifeq (${DIMAGE}, )
   #Default image name
   DIMAGE:=openebs/linux-utils
-  XC_ARCH:=$(shell uname -m)
-  ifeq (${XC_ARCH},aarch64)
-    DIMAGE="openebs/linux-utils-arm64"
-  else ifeq (${XC_ARCH},ppc64le)
-    DIMAGE="openebs/linux-utils-ppc64le"
-  endif
   export DIMAGE
 endif
 
@@ -81,3 +82,5 @@ test:
 .PHONY: push
 push: 
 	./buildscripts/push;
+
+include Makefile.buildx.mk
