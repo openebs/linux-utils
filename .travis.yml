@@ -30,6 +30,7 @@ script:
   - make test
   - ./trivy --exit-code 0 --severity HIGH --no-progress ${DIMAGE}:ci
   - ./trivy --exit-code 1 --severity CRITICAL --no-progress ${DIMAGE}:ci
+  - make push
   # If this build is running due to travis release tag, and
   # this job indicates to push the release downstream, then
   # go ahead and tag the dependent repo.
