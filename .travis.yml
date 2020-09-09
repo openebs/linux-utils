@@ -67,5 +67,5 @@ script:
       fi;
       REL_BRANCH=$(echo $(echo "$TRAVIS_TAG" | cut -d'-' -f1 | rev | cut -d'.' -f2- | rev).x$REL_SUFFIX) ;
       ./buildscripts/git-release "${REPO_ORG}/jiva" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
-      ./buildscripts/git-release "${REPO_ORG}/libcstor" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
+      ./buildscripts/git-release "${REPO_ORG}/cstor" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
     fi
