@@ -38,3 +38,12 @@ jobs:
         env:
           IMG_RESULT: cache
         run: make buildx.image
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Scan
+      uses: docker://aquasec/trivy
+      with:
+        args: --severity CRITICAL --no-progress ${{ secrets.DIMAGE }}:ci

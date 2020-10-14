@@ -46,3 +46,12 @@ jobs:
         run: |
           make buildx.image
           make buildx.push
+
+  trivy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Scan
+      uses: docker://aquasec/trivy
+      with:
+        args: --severity CRITICAL --no-progress ${{ secrets.DIMAGE }}:release-tag
