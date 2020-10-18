@@ -56,4 +56,4 @@ jobs:
     - name: Scan
       uses: docker://aquasec/trivy
       with:
-        args: --severity CRITICAL --no-progress ${{ secrets.DIMAGE }}:ci
+        args: --severity CRITICAL --no-progress -t ci
