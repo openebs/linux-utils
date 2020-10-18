@@ -54,6 +54,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Scan
-      uses: docker://aquasec/trivy
+      uses: docker://openebs/linux-utils
       with:
         args: --severity CRITICAL --no-progress -t ci
