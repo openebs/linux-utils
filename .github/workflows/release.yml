@@ -48,10 +48,16 @@ jobs:
           make buildx.push
 
   trivy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
-    - name: Scan
-      uses: docker://openebs/linux-utils
-      with:
-        args: --severity CRITICAL --no-progress -t <release-tag>
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/openebs/linux-utils:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
