@@ -53,6 +53,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
+      - name: Set Tag
+        run: |
+          echo "::set-env name=TAG::${GITHUB_REF#refs/*/v}"
+          echo "::set-env name=RELEASE_TAG::${TAG}"
+        
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
