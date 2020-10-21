@@ -38,9 +38,6 @@ jobs:
         env:
           IMG_RESULT: cache
         run: make buildx.image
-
-      - name: Checkout code
-        uses: actions/checkout@v2
         
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
