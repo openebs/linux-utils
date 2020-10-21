@@ -39,9 +39,6 @@ jobs:
           IMG_RESULT: cache
         run: make buildx.image
 
-  trivy:
-    runs-on: ubuntu-18.04
-    steps:
       - name: Checkout code
         uses: actions/checkout@v2
         
