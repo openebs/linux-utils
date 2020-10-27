@@ -36,7 +36,7 @@ jobs:
 
       - name: Build Image
         env:
-          IMG_RESULT: cache
+          IMG_RESULT: load
         run: make buildx.image
         
       - name: Run Trivy vulnerability scanner
