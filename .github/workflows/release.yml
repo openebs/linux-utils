@@ -46,3 +46,23 @@ jobs:
         run: |
           make buildx.image
           make buildx.push
+
+  trivy:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Set Tag
+        run: |
+          echo "::set-env name=TAG::${GITHUB_REF#refs/*/v}"
+          echo "::set-env name=RELEASE_TAG::${TAG}"
+        
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: openebs/linux-utils:${{ env.RELEASE_TAG }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
