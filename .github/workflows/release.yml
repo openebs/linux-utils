@@ -55,6 +55,7 @@ jobs:
 
   trivy:
     runs-on: ubuntu-18.04
+    needs: ['linux-utils']
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
