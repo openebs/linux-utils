@@ -69,4 +69,6 @@ script:
       ./buildscripts/git-release "${REPO_ORG}/jiva" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
       ./buildscripts/git-release "${REPO_ORG}/cstor" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
       ./buildscripts/git-release "${REPO_ORG}/libcstor" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
+      ./buildscripts/git-release "${REPO_ORG}/dynamic-localpv-provisioner" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
+      ./buildscripts/git-release "${REPO_ORG}/m-exporter" "$TRAVIS_TAG" "$REL_BRANCH" || travis_terminate 1;
     fi
