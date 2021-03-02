@@ -40,9 +40,13 @@ jobs:
           version: v0.5.1
 
       - name: Build Image
-        env:
-          IMG_RESULT: load
-        run: make buildx.image
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile
+          push: false
+          platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/ppc64le
+          tags: |
+            openebs/linux-utils:ci
         
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
