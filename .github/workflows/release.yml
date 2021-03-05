@@ -116,3 +116,21 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
+
+  downstream-tagging:
+    runs-on: ubuntu-latest
+    # since trivy already depends on linux-utils, its not included here
+    needs: ['trivy']
+    steps:
+      - name: Downstream tagging
+        uses: akhilerm@openebs-release-mgmt@main
+        with:
+          tag-name: ${{ github.ref }}
+          body: 'Release created from linux-utils'
+          repo: |
+            jiva
+            cstor
+            libcstor
+            dynamic-localpv-provisioner
+            m-exporter
+          token: ${{ secrets.RELEASE_TOKEN }}
