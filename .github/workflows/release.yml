@@ -133,4 +133,5 @@ jobs:
             libcstor
             dynamic-localpv-provisioner
             m-exporter
-          token: ${{ secrets.RELEASE_TOKEN }}
+          # GR_TOKEN secret is the access token to perform github releases
+          token: ${{ secrets.GR_TOKEN }}
