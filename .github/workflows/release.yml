@@ -123,7 +123,7 @@ jobs:
     needs: ['trivy']
     steps:
       - name: Downstream tagging
-        uses: akhilerm@openebs-release-mgmt@v1
+        uses: akhilerm@openebs-release-mgmt@v1.1.0
         with:
           tag-name: ${{ github.ref }}
           body: 'Release created from linux-utils'
@@ -134,4 +134,4 @@ jobs:
             dynamic-localpv-provisioner
             m-exporter
           # GR_TOKEN secret is the access token to perform github releases
-          token: ${{ secrets.GR_TOKEN }}
+          github-token: ${{ secrets.GR_TOKEN }}
