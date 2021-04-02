@@ -94,7 +94,7 @@ jobs:
             DBUILD_DATE=${{ steps.date.outputs.DATE }}
             DBUILD_REPO_URL=https://github.com/openebs/linux-utils
             DBUILD_SITE_URL=https://openebs.io
-            RELEASE_TAG=${RELEASE_TAG}
+            RELEASE_TAG=${{ env.RELEASE_TAG }}
 
   trivy:
     runs-on: ubuntu-latest
@@ -116,3 +116,22 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
+
+  downstream-tagging:
+    runs-on: ubuntu-latest
+    # since trivy already depends on linux-utils, its not included here
+    needs: ['trivy']
+    steps:
+      - name: Downstream tagging
+        uses: akhilerm@openebs-release-mgmt@v1.1.0
+        with:
+          tag-name: ${{ github.ref }}
+          body: 'Release created from linux-utils'
+          repo: |
+            jiva
+            cstor
+            libcstor
+            dynamic-localpv-provisioner
+            m-exporter
+          # GR_TOKEN secret is the access token to perform github releases
+          github-token: ${{ secrets.GR_TOKEN }}

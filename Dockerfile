@@ -1,4 +1,4 @@
-FROM alpine:3.12.4
+FROM alpine:3.12.6
 RUN apk add --no-cache util-linux
 
 ARG DBUILD_DATE
