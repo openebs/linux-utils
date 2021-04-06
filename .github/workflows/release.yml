@@ -130,7 +130,6 @@ jobs:
           repo: |
             jiva
             cstor
-            libcstor
             dynamic-localpv-provisioner
             m-exporter
           # GR_TOKEN secret is the access token to perform github releases
