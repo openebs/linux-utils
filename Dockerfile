@@ -1,6 +1,5 @@
 FROM alpine:3.12.7
-RUN apk add --no-cache util-linux
-RUN apk add xfsprogs xfsprogs-extra
+RUN apk add --no-cache util-linux xfsprogs xfsprogs-extra
 
 ARG DBUILD_DATE
 ARG DBUILD_REPO_URL="https://github.com/openebs/linux-utils"
