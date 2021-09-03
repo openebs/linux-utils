@@ -1,4 +1,4 @@
-FROM alpine:3.14.1
+FROM alpine:3.14.2
 RUN apk add --no-cache util-linux xfsprogs xfsprogs-extra
 
 ARG DBUILD_DATE
