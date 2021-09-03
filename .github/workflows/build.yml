@@ -32,7 +32,7 @@ jobs:
         run: |
           BRANCH="${GITHUB_REF##*/}"
           CI_TAG=${BRANCH#v}-ci
-          if [ ${BRANCH} = "master" ]; then
+          if [ ${BRANCH} = "main" ]; then
             CI_TAG="ci"
           fi
           echo "TAG=${CI_TAG}" >> $GITHUB_ENV
@@ -114,7 +114,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          # the tag will be always ci since only master branch is present
+          # the tag will be always ci since only main branch is present
           # in this repository
           image-ref: 'openebs/linux-utils:ci'
           format: 'table'
