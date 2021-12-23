@@ -1,5 +1,5 @@
 FROM alpine:3.14.3
-RUN apk add --no-cache util-linux xfsprogs xfsprogs-extra
+RUN apk add --no-cache util-linux xfsprogs xfsprogs-extra lvm2 device-mapper
 
 ARG DBUILD_DATE
 ARG DBUILD_REPO_URL="https://github.com/openebs/linux-utils"
