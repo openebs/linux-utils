@@ -137,7 +137,6 @@ jobs:
           body: 'Release created from linux-utils'
           repo: |
             jiva
-            cstor
             libcstor
             dynamic-localpv-provisioner
           # GR_TOKEN secret is the access token to perform github releases
