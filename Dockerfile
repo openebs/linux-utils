@@ -1,4 +1,4 @@
-FROM alpine:3.14.5
+FROM alpine:3.14.6
 RUN apk add --no-cache util-linux xfsprogs xfsprogs-extra lvm2 device-mapper
 
 ARG DBUILD_DATE

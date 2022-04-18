@@ -1,0 +1,8 @@
+# This vulnerability has been fixed in alpine 3.14.6.
+# We have upgraded to 3.14.6, but the aquasecurity/trivy-action
+# v0.2.4 keeps failing because the database is not up to date.
+# https://github.com/aquasecurity/trivy/issues/1988
+CVE-2022-28391
+
+# The zgrep utility is not installed in the linux-utils image
+CVE-2022-1271
