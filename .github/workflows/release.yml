@@ -135,9 +135,12 @@ jobs:
         with:
           tag-name: ${{ github.ref }}
           body: 'Release created from linux-utils'
+          # Disable downstream tagging for cStor and Jiva, as their latest tagged
+          # versions have diverged from that of dynamic-localpv
+          # repo: |
+          #   jiva
+          #   libcstor
           repo: |
-            jiva
-            libcstor
             dynamic-localpv-provisioner
           # GR_TOKEN secret is the access token to perform github releases
           github-token: ${{ secrets.GR_TOKEN }}
