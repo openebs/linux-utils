@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
 
       - name: Set Image Org
         # sets the default IMAGE_ORG to openebs
@@ -39,20 +39,19 @@ jobs:
       - name: Set Build Date
         id: date
         run: |
-          echo "::set-output name=DATE::$(date -u +'%Y-%m-%dT%H:%M:%S%Z')"
+          echo "DATE=$(date -u +'%Y-%m-%dT%H:%M:%S%Z')" >> $GITHUB_OUTPUT
 
       - name: Docker meta
         id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
+        uses: docker/metadata-action@v4
         with:
           # add each registry to which the image needs to be pushed here
           images: |
             ${{ env.IMAGE_ORG }}/linux-utils
             quay.io/${{ env.IMAGE_ORG }}/linux-utils
             ghcr.io/${{ env.IMAGE_ORG }}/linux-utils
-          tag-latest: true
-          tag-semver: |
-            {{version}}
+          tags: |
+            type=semver,pattern={{version}}
 
       - name: Print Tags
         run: |
@@ -60,38 +59,38 @@ jobs:
           echo "RELEASE TAG: ${RELEASE_TAG}"
 
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: all
 
       - name: Setup Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
         with:
-          version: v0.5.1
+          version: v0.13.1
 
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Login to Quay
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: quay.io
           username: ${{ secrets.QUAY_USERNAME }}
           password: ${{ secrets.QUAY_TOKEN }}
 
       - name: Login to GHCR
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Push Image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           file: ./Dockerfile
           push: true
@@ -109,7 +108,7 @@ jobs:
     needs: ['linux-utils']
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         
       - name: Set Release Tag
         run: |
