@@ -11,7 +11,7 @@ This project follows the [OpenEBS Contributor Guidelines](https://github.com/ope
 
 OpenEBS uses the standard GitHub pull requests process to review and accept contributions.  There are several areas that could use your help. For starters, you could help in improving the sections in this document by either creating a new issue describing the improvement or submitting a pull request to this repository. The issues for the various OpenEBS components (including components in this repository) are maintained in [openebs/openebs](https://github.com/openebs/openebs/issues) repository.
 
-* If you have a trivial fix or improvement, go ahead and create a pull request, addressing (with `@...`) the maintainer of this repository (see [MAINTAINERS.md](MAINTAINERS.md)) in the description of the pull request.
+* If you have a trivial fix or improvement, go ahead and create a pull request, addressing (with `@...`) the maintainer of this repository (see [MAINTAINERS](MAINTAINERS)) in the description of the pull request.
 
 * If you would like to work on something more involved, please connect with the OpenEBS Contributors. See [OpenEBS Community](https://github.com/openebs/openebs/tree/HEAD/community).
 
