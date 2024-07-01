@@ -123,23 +123,3 @@ jobs:
           exit-code: '1'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
-
-  downstream-tagging:
-    runs-on: ubuntu-latest
-    # since trivy already depends on linux-utils, its not included here
-    needs: ['trivy']
-    steps:
-      - name: Downstream tagging
-        uses: akhilerm/openebs-release-mgmt@v1.1.0
-        with:
-          tag-name: ${{ github.ref }}
-          body: 'Release created from linux-utils'
-          # Disable downstream tagging for cStor and Jiva, as their latest tagged
-          # versions have diverged from that of dynamic-localpv
-          # repo: |
-          #   jiva
-          #   libcstor
-          repo: |
-            dynamic-localpv-provisioner
-          # GR_TOKEN secret is the access token to perform github releases
-          github-token: ${{ secrets.GR_TOKEN }}
