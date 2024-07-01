@@ -27,7 +27,7 @@ ifeq (${IMAGE_ORG}, )
 endif
 
 ifeq (${DIMAGES}, )
-  DIMAGES:=linux-utils
+  DIMAGES:=linux-utils alpine-sh alpine-bash
   export DIMAGES
 endif
 
@@ -77,6 +77,13 @@ test:
 	@sudo docker run --rm "$$IMAGE_ORG/linux-utils:ci" which mkdir
 	@sudo docker run --rm "$$IMAGE_ORG/linux-utils:ci" which rm
 	@sudo docker run --rm "$$IMAGE_ORG/linux-utils:ci" which wipefs
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-sh:ci" which /bin/sh
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-sh:ci" which nc
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-sh:ci" which chown
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which /bin/sh
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which /bin/bash
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which nc
+	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which chown
 
 .PHONY: clobber
 clobber:
