@@ -22,15 +22,13 @@ SHELL:=/bin/bash
 BUILDX:=false
 
 ifeq (${IMAGE_ORG}, )
-  IMAGE_ORG="openebs"
+  IMAGE_ORG=openebs
   export IMAGE_ORG
 endif
 
-# Determine the DIMAGE associated with given arch/os 
-ifeq (${DIMAGE}, )
-  #Default image name
-  DIMAGE:=openebs/linux-utils
-  export DIMAGE
+ifeq (${DIMAGES}, )
+  DIMAGES:=linux-utils
+  export DIMAGES
 endif
 
 #Initialize Docker build arguments. Each of these
@@ -60,27 +58,31 @@ build: image push
 .PHONY: header
 header:
 	@echo "------------------------------------"
-	@echo "--> Building linux utils image      "
+	@echo "--> Building linux utils images     "
 	@echo "------------------------------------"
 	@echo
 
 .PHONY: image
 image: header
-	@sudo docker build -t "${DIMAGE}:ci" -f Dockerfile . ${DBUILD_ARGS}
-	@echo
-
+	@for image in $$DIMAGES; do \
+		sudo docker build -t "$$IMAGE_ORG/$$image:ci" -f ./dockerfiles/$$image/Dockerfile . ${DBUILD_ARGS}; \
+	done
+	@echo "Done"
 
 .PHONY: test
 test:
 	@echo "---------------------------------------"
 	@echo "--> Test required tools are available  "
 	@echo "---------------------------------------"
-	@sudo docker run "${DIMAGE}:ci" which mkdir
-	@sudo docker run "${DIMAGE}:ci" which rm
-	@sudo docker run "${DIMAGE}:ci" which wipefs
+	@sudo docker run --rm "$$IMAGE_ORG/linux-utils:ci" which mkdir
+	@sudo docker run --rm "$$IMAGE_ORG/linux-utils:ci" which rm
+	@sudo docker run --rm "$$IMAGE_ORG/linux-utils:ci" which wipefs
 
-.PHONY: push
-push: 
-	./buildscripts/push;
+.PHONY: clobber
+clobber:
+	@for image in $$DIMAGES; do \
+	    docker rmi $$IMAGE_ORG/$$image:$$TAG || true; \
+	done
+	docker image prune -f
 
 include Makefile.buildx.mk

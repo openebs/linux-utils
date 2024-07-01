@@ -33,19 +33,32 @@ else
 	export PUSH_ARG="--push"
 endif
 
-DOCKERX_IMAGE=${IMAGE_ORG}/linux-utils:${TAG}
-
 .PHONY: buildx.image
 buildx.image:
 	@if ! docker buildx ls | grep -q container-builder; then\
 		docker buildx create --platform ${PLATFORMS} --name container-builder --use;\
 	fi
-	@docker buildx build --platform ${PLATFORMS} \
-		-t "$(DOCKERX_IMAGE)" ${DBUILD_ARGS} -f Dockerfile \
-		. ${PUSH_ARG}
-	@echo "--> Build docker image: $(DOCKERX_IMAGE)"
+	@echo "Building $$DIMAGES for platforms ${PLATFORMS}"
+	@for image in $$DIMAGES; do \
+	    DOCKERX_IMAGE=$$IMAGE_ORG/$$image:$$TAG; \
+		echo "--> Building $$DOCKERX_IMAGE"; \
+		docker buildx build --platform ${PLATFORMS} \
+			-t "$$DOCKERX_IMAGE" ${DBUILD_ARGS} -f ./dockerfiles/$$image/Dockerfile \
+			. ${PUSH_ARG}; \
+		echo "--> Built docker image: $$DOCKERX_IMAGE"; \
+		echo; \
+	done
+	@echo "Built $$DIMAGES for platforms ${PLATFORMS}"
+	@docker buildx stop --builder container-builder
 	@echo
 
-.PHONY: buildx.push
-buildx.push:
-	BUILDX=true DIMAGE=${IMAGE_ORG}/linux-utils ./buildscripts/push
+.PHONY: buildx.clean
+buildx.clean:
+	docker buildx rm --builder container-builder || true
+
+.PHONY: buildx.clobber
+buildx.clobber: buildx.clean
+	@for image in $$DIMAGES; do \
+	    docker rmi $$IMAGE_ORG/$$image:$$TAG || true; \
+	done
+	docker rmi moby/buildkit:buildx-stable-1
