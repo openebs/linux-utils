@@ -23,6 +23,8 @@ jobs:
       matrix:
         include:
           - image: linux-utils
+          - image: alpine-sh
+          - image: alpine-bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -116,6 +118,8 @@ jobs:
       matrix:
         include:
           - image: linux-utils
+          - image: alpine-sh
+          - image: alpine-bash
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
