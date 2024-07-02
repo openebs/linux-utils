@@ -24,6 +24,13 @@ on:
 jobs:
   linux-utils:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: linux-utils
+          - image: alpine-sh
+          - image: alpine-bash
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,17 +49,17 @@ jobs:
       - name: Build Image
         uses: docker/build-push-action@v5
         with:
-          file: ./Dockerfile
+          file: ./dockerfiles/${{ matrix.image }}/Dockerfile
           push: false
           load: true
           platforms: linux/amd64
           tags: |
-            openebs/linux-utils:ci
-        
+            openebs/${{ matrix.image }}:ci
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'openebs/linux-utils:ci'
+          image-ref: 'openebs/${{ matrix.image }}:ci'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
