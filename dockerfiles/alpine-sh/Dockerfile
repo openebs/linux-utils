@@ -1,4 +1,4 @@
-FROM alpine:3.20.1
+FROM alpine:3.21.0
 
 ARG DBUILD_DATE
 ARG DBUILD_REPO_URL="https://github.com/openebs/linux-utils"
