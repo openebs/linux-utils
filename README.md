@@ -2,7 +2,6 @@
 [![CI](https://github.com/openebs/linux-utils/actions/workflows/pull_request.yml/badge.svg)](https://github.com/openebs/linux-utils/actions/workflows/pull_request.yml)
 [![Slack](https://img.shields.io/badge/chat-slack-ff1493.svg?style=flat-square)](https://kubernetes.slack.com/messages/openebs)
 [![Community Meetings](https://img.shields.io/badge/Community-Meetings-blue)](https://us05web.zoom.us/j/87535654586?pwd=CigbXigJPn38USc6Vuzt7qSVFoO79X.1)
-[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/9662/badge)](https://www.bestpractices.dev/projects/9662)
 [![FOSSA Status](https://app.fossa.com/api/projects/custom%2B162%2Fgithub.com%2Fopenebs%2Flinux-utils.svg?type=shield&issueType=license)](https://app.fossa.com/projects/custom%2B162%2Fgithub.com%2Fopenebs%2Flinux-utils?ref=badge_shield&issueType=license)
 
 This repository contains the scripts required for building a customized alpine based linux utils docker image used for launching OpenEBS helper jobs. 
