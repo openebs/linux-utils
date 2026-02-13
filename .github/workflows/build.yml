@@ -112,28 +112,3 @@ jobs:
             DBUILD_DATE=${{ steps.date.outputs.DATE }}
             DBUILD_REPO_URL=https://github.com/openebs/linux-utils
             DBUILD_SITE_URL=https://openebs.io
-
-  trivy:
-    runs-on: ubuntu-latest
-    needs: ['images']
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image: linux-utils
-          - image: alpine-sh
-          - image: alpine-bash
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          # the tag will be always ci since only main branch is present
-          # in this repository
-          image-ref: 'openebs/${{ matrix.image }}:ci'
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'

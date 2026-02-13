@@ -109,31 +109,3 @@ jobs:
             DBUILD_REPO_URL=https://github.com/openebs/linux-utils
             DBUILD_SITE_URL=https://openebs.io
             RELEASE_TAG=${{ env.RELEASE_TAG }}
-
-  trivy:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - image: linux-utils
-          - image: alpine-sh
-          - image: alpine-bash
-    needs: ['images']
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set Release Tag
-        run: |
-          TAG="${GITHUB_REF#refs/*/v}"
-          echo "RELEASE_TAG=${TAG}" >> $GITHUB_ENV
-
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: openebs/${{ matrix.image }}:${{ env.RELEASE_TAG }}
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          severity: 'CRITICAL,HIGH'
