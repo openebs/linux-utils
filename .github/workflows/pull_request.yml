@@ -17,8 +17,8 @@ name: ci
 on:
   pull_request:
     branches:
-      # on pull requests to main and release branches
-      - main
+      # on pull requests to develop and release branches
+      - develop
       - 'v*'
 
 jobs:
