@@ -1,4 +1,4 @@
-FROM alpine:3.23.4
+FROM alpine:3.23.5
 
 RUN apk add --no-cache util-linux xfsprogs xfsprogs-extra lvm2 device-mapper e2fsprogs-extra quota-tools
 
