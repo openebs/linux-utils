@@ -51,7 +51,8 @@ jobs:
         with:
           file: ./dockerfiles/${{ matrix.image }}/Dockerfile
           push: false
-          load: true
+          sbom: true
+          provenance: mode=max
           platforms: linux/amd64
           tags: |
             openebs/${{ matrix.image }}:ci
