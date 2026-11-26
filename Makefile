@@ -27,7 +27,7 @@ ifeq (${IMAGE_ORG}, )
 endif
 
 ifeq (${DIMAGES}, )
-  DIMAGES:=linux-utils alpine-sh alpine-bash
+  DIMAGES:=linux-utils alpine-sh alpine-bash ubi-bash
   export DIMAGES
 endif
 
@@ -84,6 +84,13 @@ test:
 	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which /bin/bash
 	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which nc
 	@sudo docker run --rm "$$IMAGE_ORG/alpine-bash:ci" which chown
+	@# ubi-micro ships no `which`, so check with a bash builtin instead.
+	@sudo docker run --rm --entrypoint /bin/bash "$$IMAGE_ORG/ubi-bash:ci" -c \
+		'for t in sh bash timeout sleep date chown; do command -v $$t >/dev/null || { echo "missing: $$t"; exit 1; }; done'
+	@# netcat is deliberately absent: the probes use bash's /dev/tcp instead,
+	@# so check that redirection works rather than that nc exists.
+	@sudo docker run --rm --entrypoint /bin/bash "$$IMAGE_ORG/ubi-bash:ci" -c \
+		'exec 3<>/dev/tcp/127.0.0.1/9 2>/dev/null && { echo "closed port wrongly succeeded"; exit 1; }; echo "/dev/tcp works"'
 
 .PHONY: clobber
 clobber:

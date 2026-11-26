@@ -19,6 +19,7 @@ jobs:
           - image: linux-utils
           - image: alpine-sh
           - image: alpine-bash
+          - image: ubi-bash
     steps:
       - name: Checkout
         uses: actions/checkout@v7
