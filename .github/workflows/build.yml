@@ -26,8 +26,14 @@ jobs:
       matrix:
         include:
           - image: linux-utils
+            platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/ppc64le
           - image: alpine-sh
+            platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/ppc64le
           - image: alpine-bash
+            platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/ppc64le
+          # ubi-micro publishes no linux/arm/v7, and does publish s390x.
+          - image: ubi-bash
+            platforms: linux/amd64, linux/arm64, linux/ppc64le, linux/s390x
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -107,7 +113,7 @@ jobs:
           push: true
           sbom: true
           provenance: mode=max
-          platforms: linux/amd64, linux/arm64, linux/arm/v7, linux/ppc64le
+          platforms: ${{ matrix.platforms }}
           tags: |
             ${{ steps.docker_meta.outputs.tags }}
           build-args: |
